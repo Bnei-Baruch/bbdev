@@ -1,0 +1,5 @@
+bb-script:
+  js:
+    bb.js: {}
+  dependencies:
+    - core/jquery

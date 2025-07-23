@@ -1,0 +1,24 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function bbdev_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'bbdev/bb-script';
+}
+ 
+/*
+ * Adds custom javascript
+ */
+function bbdev_civicrm_buildForm($formName, &$form) {
+  try {
+    $module_path = \Drupal::service('extension.list.module')->getPath('bbdev');
+    $script_url = '/' . $module_path . '/bb.js';
+    CRM_Core_Resources::singleton()->addScriptUrl($script_url);
+  } catch (Exception $e) {
+    \Drupal::logger('bbdev_civicrm_buildForm')->error($e->getMessage());
+  }
+}
+
