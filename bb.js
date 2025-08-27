@@ -26,10 +26,10 @@
                 contactInput.on('input', function() {
                     const contactValue = contactInput.val();
                     if (targetField1) {
-                        targetField1.value = contactValue;
+                        targetField1.val(contactValue);
                     }
                     if (targetField2) {
-                        targetField2.value = contactValue;
+                        targetField2.val(contactValue);
                     }
                 });
             }
