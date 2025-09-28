@@ -24,7 +24,8 @@
                 
                 // Add input event listener to the contact field
                 contactInput.on('input', function() {
-                    const contactValue = contactInput.val();
+                    let contactValue = contactInput.val();
+                    contactValue = contactValue.substr(0, 20);
                     if (targetField1) {
                         targetField1.val(contactValue);
                     }
