@@ -1,5 +1,8 @@
 // Reception View
 (function($){
+    if ($ === null) {
+	    return;
+    }
     // Enhanced version with proper error handling and debugging
     $(document).ready(function() {
         try {
