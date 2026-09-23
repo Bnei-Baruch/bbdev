@@ -10,15 +10,24 @@ function bbdev_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
  
 /*
- * Adds custom javascript
+ * Adds custom javascript to every CiviCRM page.
+ *
+ * hook_civicrm_buildForm() only fires on QuickForm screens, so Afform and
+ * Search Kit pages - civicrm/bballcontacts among them - never received bb.js.
+ * The coreResources bundle is attached to every CiviCRM page, form or not.
  */
-function bbdev_civicrm_buildForm($formName, &$form) {
+function bbdev_civicrm_alterBundle(CRM_Core_Resources_Bundle $bundle) {
+  if ($bundle->name !== 'coreResources') {
+    return;
+  }
   try {
     $module_path = \Drupal::service('extension.list.module')->getPath('bbdev');
-    $script_url = '/' . $module_path . '/bb.js';
-    CRM_Core_Resources::singleton()->addScriptUrl($script_url);
+    // Static assets are served with a 10-year Expires header, so the URL needs
+    // a version query or browsers never pick up an edited bb.js.
+    $version = @filemtime(DRUPAL_ROOT . '/' . $module_path . '/bb.js') ?: 0;
+    $script_url = '/' . $module_path . '/bb.js?r=' . $version;
+    $bundle->addScriptUrl($script_url);
   } catch (Exception $e) {
-    \Drupal::logger('bbdev_civicrm_buildForm')->error($e->getMessage());
+    \Drupal::logger('bbdev_civicrm_alterBundle')->error($e->getMessage());
   }
 }
-
