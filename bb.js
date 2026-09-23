@@ -89,3 +89,44 @@
     }
 })(jQuery);
 
+/* ============================================================================
+ * Adds a small collapse/expand toggle at the top of the CiviCRM left
+ * sidebar (installed via civicrm-custom-theme-overrides.css).
+ *
+ * Clicking it toggles the "civi-sidebar-collapsed" class on <body>, which
+ * the CSS uses to shrink the sidebar to icon-only width (56px) and push
+ * the main content back accordingly. Clicking again restores full width.
+ *
+ * This button lives INSIDE the sidebar's own list (as its first item),
+ * not as a separately floating fixed element - so it inherits the
+ * sidebar's own (already correct) position and never fights the Drupal
+ * toolbar or CiviCRM's native mobile toggle button, unlike earlier
+ * attempts.
+ *
+ * Where to add this file: alongside civicrm-custom-theme-overrides.css,
+ * e.g. registered via an extension's hook_civicrm_coreResourceList()
+ * (same pattern as the side-panel split-view CSS/JS you've added before).
+ * ========================================================================== */
+
+(() => {
+    const menu = document.getElementById('civicrm-menu');
+    if (!menu) return;
+    if (document.getElementById('civi-sidebar-collapse-btn')) return; // already added
+
+    const li = document.createElement('li');
+    li.id = 'civi-sidebar-collapse-btn';
+    li.innerHTML = `
+    <a href="#" title="Collapse / expand menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="16" rx="2"/>
+        <line x1="9" y1="4" x2="9" y2="20"/>
+      </svg>
+    </a>
+  `;
+    li.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.body.classList.toggle('civi-sidebar-collapsed');
+    });
+
+    menu.prepend(li);
+})();
