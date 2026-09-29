@@ -107,7 +107,7 @@
  * e.g. registered via an extension's hook_civicrm_coreResourceList()
  * (same pattern as the side-panel split-view CSS/JS you've added before).
  * ========================================================================== */
-
+/*
 (function($){
     if (!$) {
         return;
@@ -135,3 +135,4 @@
     });
 
 })(window.jQuery);
+*/
